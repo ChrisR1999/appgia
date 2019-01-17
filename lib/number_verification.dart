@@ -107,10 +107,10 @@ class _NumberVerificationFormState extends State<NumberVerificationForm> {
                       fontSize: 20.0,
                       letterSpacing: 0.3,
                       fontFamily: 'Roboto'),
-                  validator: (value){
-                    if(value.isEmpty)
+                  validator: (value) {
+                    if (value.isEmpty)
                       return StringConstants.emptyCamp;
-                    else if(value.length < 6)
+                    else if (value.length < 6)
                       return StringConstants.incompleteCode;
                   },
                 ),
@@ -124,8 +124,7 @@ class _NumberVerificationFormState extends State<NumberVerificationForm> {
         child: RaisedButton(
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              Scaffold.of(context)
-                  .showSnackBar(
+              Scaffold.of(context).showSnackBar(
                   SnackBar(content: Text(StringConstants.processing)));
             }
           },

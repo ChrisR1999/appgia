@@ -43,7 +43,7 @@ class _MainAppActivity extends StatelessWidget {
                     height: sizeX * 1.2,
                     width: (sizeX - (sizeX * 0.16)),
                     decoration: BoxDecoration(
-                      color: Colors.pink[500],
+                      color: Colors.white,
                     ),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -89,11 +89,9 @@ class _MainAppActivity extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Image.asset(
-                            'images/pCivil.png',
-                            //width: (sizeX - (sizeX * 0.5)),
-                            //fit: BoxFit.cover
-                          ),
+                          Image.asset('images/pCivil.png',
+                              width: (sizeX - (sizeX * 0.3)),
+                              fit: BoxFit.cover),
                           Text(
                             "Prot. Civil",
                             style:
@@ -138,11 +136,17 @@ class _MainAppActivity extends StatelessWidget {
                     ),
                     onPressed: () {},
                   ),
-                  Text(
-                    "Llamar\nOperador",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18.0, letterSpacing: 0.4),
-                  )
+                  Container(
+                      margin: EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Llamar\nOperador",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            letterSpacing: 0.3,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Rock Salt'),
+                      ))
                 ]),
             Column(
                 mainAxisSize: MainAxisSize.max,
@@ -160,11 +164,17 @@ class _MainAppActivity extends StatelessWidget {
                     ),
                     onPressed: () {},
                   ),
-                  Text(
-                    "Enviar\nUbicación",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18.0, letterSpacing: 0.4),
-                  )
+                  Container(
+                      margin: EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Enviar\nUbicación",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          letterSpacing: 0.3,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ))
                 ]),
             Column(
                 mainAxisSize: MainAxisSize.max,
@@ -182,11 +192,17 @@ class _MainAppActivity extends StatelessWidget {
                     ),
                     onPressed: () {},
                   ),
-                  Text(
-                    "Tomar\nFotografía",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18.0, letterSpacing: 0.4),
-                  )
+                  Container(
+                      margin: EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "Tomar\nFotografía",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          letterSpacing: 0.3,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ))
                 ])
           ]),
     );
