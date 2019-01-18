@@ -1,5 +1,6 @@
-class StringConstants {
+class StringUtils {
   static const String appBarTitle = 'GIA Assistent';
+  static const String settingAppBarTitle = 'Configuración';
   static const String setPhoneNumber = 'Ingrese Número Celular';
   static const String number = 'Número *';
   static const String phonePrefix = '+52 ';

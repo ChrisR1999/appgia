@@ -1,6 +1,7 @@
 import 'package:app_trabajo/styles/appbar_style.dart';
 import 'package:app_trabajo/styles/themedata_style.dart';
-import 'package:app_trabajo/utilities/string_constants.dart';
+import 'package:app_trabajo/main_screen.dart';
+import 'package:app_trabajo/utils/string_utils.dart';
 import 'package:flutter/material.dart';
 
 class NumberVerification extends StatelessWidget {
@@ -10,31 +11,33 @@ class NumberVerification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
-      theme: ThemeDataWidget.getThemeData(),
-      title: StringConstants.appBarTitle,
+      routes: {
+        '/loginselect/numberscreen/numberverification/mainscreen': (context) =>
+            MainScreen(),
+      },
+      theme: ThemeDataStyle.getThemeData(),
+      title: StringUtils.appBarTitle,
       home: Scaffold(
-        appBar: AppBarWidget.getAppBar(),
-        body: NumberVerificationForm(number),
+        appBar: AppBarStyle.getAppBar(),
+        body: _NumberVerificationForm(number),
       ),
     );
   }
 }
 
-class NumberVerificationForm extends StatefulWidget {
+class _NumberVerificationForm extends StatefulWidget {
   final String number;
 
-  NumberVerificationForm(this.number);
+  _NumberVerificationForm(this.number);
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _NumberVerificationFormState();
+    return __NumberVerificationFormState();
   }
 }
 
-class _NumberVerificationFormState extends State<NumberVerificationForm> {
+class __NumberVerificationFormState extends State<_NumberVerificationForm> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -98,8 +101,8 @@ class _NumberVerificationFormState extends State<NumberVerificationForm> {
                       Icons.message,
                       color: Colors.black,
                     ),
-                    labelText: StringConstants.code,
-                    hintText: StringConstants.verifyCode,
+                    labelText: StringUtils.code,
+                    hintText: StringUtils.verifyCode,
                   ),
                   maxLength: 6,
                   style: TextStyle(
@@ -109,9 +112,9 @@ class _NumberVerificationFormState extends State<NumberVerificationForm> {
                       fontFamily: 'Roboto'),
                   validator: (value) {
                     if (value.isEmpty)
-                      return StringConstants.emptyCamp;
+                      return StringUtils.emptyCamp;
                     else if (value.length < 6)
-                      return StringConstants.incompleteCode;
+                      return StringUtils.incompleteCode;
                   },
                 ),
               )
@@ -125,13 +128,15 @@ class _NumberVerificationFormState extends State<NumberVerificationForm> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text(StringConstants.processing)));
+                  SnackBar(content: Text(StringUtils.processing)));
+              Navigator.pushNamed(context,
+                  '/loginselect/numberscreen/numberverification/mainscreen');
             }
           },
           color: Colors.black,
           padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 30.0),
           child: Text(
-            StringConstants.verify,
+            StringUtils.verify,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'Roboto',

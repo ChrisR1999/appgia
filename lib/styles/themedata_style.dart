@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeDataWidget {
+class ThemeDataStyle {
   static ThemeData getThemeData() {
     return ThemeData(
       primarySwatch: Colors.grey,

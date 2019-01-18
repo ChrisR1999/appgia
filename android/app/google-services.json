@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "330634777423",
+    "firebase_url": "https://giaassistent.firebaseio.com",
+    "project_id": "giaassistent",
+    "storage_bucket": "giaassistent.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330634777423:android:11117f4bf2acb742",
+        "android_client_info": {
+          "package_name": "christophermadrigal.apptrabajo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330634777423-0llucch39kl8h561q69ujiin1m276qti.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "christophermadrigal.apptrabajo",
+            "certificate_hash": "3478b95827fd12ddb170b3898aa6657957e64e64"
+          }
+        },
+        {
+          "client_id": "330634777423-ileq6ptu4ijdhj0ondmrd8d0h6fo9ivp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsutzvngTzbuvV9K2Lp0i0NU1I7O9KYSw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330634777423-ileq6ptu4ijdhj0ondmrd8d0h6fo9ivp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

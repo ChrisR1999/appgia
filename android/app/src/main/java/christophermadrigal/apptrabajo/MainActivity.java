@@ -26,4 +26,9 @@ public class MainActivity extends FlutterActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        
+      }
 }
