@@ -1,21 +1,24 @@
-import 'package:app_trabajo/styles/appbar_style.dart';
+import 'package:app_trabajo/widgets/appbar.dart';
 import 'package:app_trabajo/styles/themedata_style.dart';
-import 'package:app_trabajo/number_verification.dart';
-import 'package:app_trabajo/utils/string_utils.dart';
+import 'package:app_trabajo/pages/number_verification.dart';
+import 'package:app_trabajo/utils/constants_utils.dart';
+import 'package:app_trabajo/utils/user_utils.dart';
 import 'package:flutter/material.dart';
 
 class NumberScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('Nombre: ' + UserUtils.getName());
+    print('Email: ' + UserUtils.getMail());
     return MaterialApp(
       routes: {
         '/loginselect/numberscreen/numberverification': (context) =>
             NumberVerification()
       },
-      title: StringUtils.appBarTitle,
+      title: StringConstants.appBarTitle,
       theme: ThemeDataStyle.getThemeData(),
       home: Scaffold(
-        appBar: AppBarStyle.getAppBar(),
+        appBar: AppBarWidget.getAppBar(),
         body: _NumberForm(),
       ),
     );
@@ -62,8 +65,8 @@ class __NumberFormState extends State<_NumberForm> {
                       Icons.phone_android,
                       color: Colors.black,
                     ),
-                    hintText: StringUtils.setPhoneNumber,
-                    labelText: StringUtils.number,
+                    hintText: StringConstants.setPhoneNumber,
+                    labelText: StringConstants.number,
                   ),
                   style: TextStyle(
                       color: Colors.black54,
@@ -74,11 +77,11 @@ class __NumberFormState extends State<_NumberForm> {
                   keyboardType: TextInputType.phone,
                   validator: (value) {
                     if (value.isEmpty)
-                      return StringUtils.emptyCamp;
+                      return StringConstants.emptyCamp;
                     else if (!(value.contains('+')))
-                      return StringUtils.prefixIncomplete;
+                      return StringConstants.prefixIncomplete;
                     else if (value.length < 13)
-                      return StringUtils.incompleteNumber;
+                      return StringConstants.incompleteNumber;
                   },
                 ),
               )
@@ -92,7 +95,7 @@ class __NumberFormState extends State<_NumberForm> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text(StringUtils.processing)));
+                  SnackBar(content: Text(StringConstants.processing)));
               Navigator.pushNamed(
                   context, '/loginselect/numberscreen/numberverification');
             }
@@ -100,7 +103,7 @@ class __NumberFormState extends State<_NumberForm> {
           color: Colors.black,
           padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 30.0),
           child: Text(
-            StringUtils.send,
+            StringConstants.send,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'Roboto',

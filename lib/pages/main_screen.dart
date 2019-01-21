@@ -1,24 +1,33 @@
-import 'package:app_trabajo/styles/appbar_style.dart';
-import 'package:app_trabajo/options.dart';
+import 'package:app_trabajo/widgets/appbar.dart';
+import 'package:app_trabajo/widgets/panic_button.dart';
+import 'package:app_trabajo/utils/constants_utils.dart';
+import 'package:app_trabajo/styles/themedata_style.dart';
+import 'package:app_trabajo/utils/display_utils.dart';
+import 'package:app_trabajo/pages/options.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    new DisplayUtils(context);
     return MaterialApp(routes: {
       '/loginselect/numberscreen/numberverification/mainscreen/settings':
           (context) => SettingsScreen(),
-    }, home: _MainScreen());
+    }, 
+    theme: ThemeDataStyle.getThemeData(),
+    home: _MainScreen());
   }
 }
 
 class _MainScreen extends StatelessWidget {
+  double sizeX;
+
   @override
   Widget build(BuildContext context) {
-    final double sizeX = (MediaQuery.of(context).size.shortestSide / 3.0);
+    sizeX = (DisplayUtils.getSizeX()) / 3.0;
 
     return Scaffold(
-      appBar: AppBarStyle.getAppBar(),
+      appBar: AppBarWidget.getAppBar(),
       body: Center(
           child: Container(
         child: Column(
@@ -30,7 +39,7 @@ class _MainScreen extends StatelessWidget {
           ],
         ),
       )),
-      bottomNavigationBar: _buildBottomBar(sizeX),
+      bottomNavigationBar: _buildBottomBar(sizeX, context),
     );
   }
 
@@ -43,77 +52,21 @@ class _MainScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Container(
-                    height: sizeX * 1.2,
-                    width: (sizeX - (sizeX * 0.16)),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: RawMaterialButton(
-                        onPressed: () {
-                          print('Salud');
-                        },
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Image.asset(
-                                'images/salud.png',
-                                width: (sizeX - (sizeX * 0.3)),
-                                fit: BoxFit.cover,
-                              ),
-                              Text(
-                                "Salud",
-                                style: TextStyle(
-                                    fontSize: 18.0, letterSpacing: 0.2),
-                              )
-                            ]))),
-                Container(
-                    height: sizeX * 1.2,
-                    width: (sizeX - (sizeX * 0.16)),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: RawMaterialButton(
-                        onPressed: () {
-                          print('Guardia');
-                        },
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Image.asset('images/guardia.png',
-                                  width: (sizeX - (sizeX * 0.5)),
-                                  fit: BoxFit.cover),
-                              Text(
-                                "Seguridad",
-                                style: TextStyle(
-                                    fontSize: 18.0, letterSpacing: 0.2),
-                              )
-                            ]))),
-                Container(
-                    height: sizeX * 1.2,
-                    width: (sizeX - (sizeX * 0.16)),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: RawMaterialButton(
-                        onPressed: () {
-                          print('Protección civil');
-                        },
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Image.asset('images/pCivil.png',
-                                  width: (sizeX - (sizeX * 0.3)),
-                                  fit: BoxFit.cover),
-                              Text(
-                                "Prot. Civil",
-                                style: TextStyle(
-                                    fontSize: 18.0, letterSpacing: 0.2),
-                              )
-                            ]))),
+                PanicButton(
+                  imageRoute: PanicConstants.healthImageRoute,
+                  label: PanicConstants.healthPanicLabel,
+                  typeOfAlert: PanicConstants.healthPanicIndicator,
+                ),
+                PanicButton(
+                  imageRoute: PanicConstants.securityImageRoute,
+                  label: PanicConstants.securityPanicLabel,
+                  typeOfAlert: PanicConstants.securityPanicIndicator,
+                ),
+                PanicButton(
+                  imageRoute: PanicConstants.protectionImageRoute,
+                  label: PanicConstants.protectionPanicLabel,
+                  typeOfAlert: PanicConstants.protectionPanicIndicator,
+                ),
               ],
             )),
         Row(children: <Widget>[
@@ -224,7 +177,7 @@ class _MainScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomBar(sizeX) {
+  Widget _buildBottomBar(sizeX, context) {
     return BottomAppBar(
       color: Colors.black,
       elevation: 4.0,
@@ -247,11 +200,14 @@ class _MainScreen extends StatelessWidget {
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: Icon(Icons.tune),
               color: Colors.white,
               iconSize: sizeX / 3.5,
               tooltip: 'Settings',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context,
+                    '/loginselect/numberscreen/numberverification/mainscreen/settings');
+              },
             ),
           ]),
     );

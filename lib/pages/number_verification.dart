@@ -1,7 +1,7 @@
-import 'package:app_trabajo/styles/appbar_style.dart';
+import 'package:app_trabajo/widgets/appbar.dart';
 import 'package:app_trabajo/styles/themedata_style.dart';
-import 'package:app_trabajo/main_screen.dart';
-import 'package:app_trabajo/utils/string_utils.dart';
+import 'package:app_trabajo/pages/main_screen.dart';
+import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:flutter/material.dart';
 
 class NumberVerification extends StatelessWidget {
@@ -17,9 +17,9 @@ class NumberVerification extends StatelessWidget {
             MainScreen(),
       },
       theme: ThemeDataStyle.getThemeData(),
-      title: StringUtils.appBarTitle,
+      title: StringConstants.appBarTitle,
       home: Scaffold(
-        appBar: AppBarStyle.getAppBar(),
+        appBar: AppBarWidget.getAppBar(),
         body: _NumberVerificationForm(number),
       ),
     );
@@ -101,8 +101,8 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
                       Icons.message,
                       color: Colors.black,
                     ),
-                    labelText: StringUtils.code,
-                    hintText: StringUtils.verifyCode,
+                    labelText: StringConstants.code,
+                    hintText: StringConstants.verifyCode,
                   ),
                   maxLength: 6,
                   style: TextStyle(
@@ -112,9 +112,9 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
                       fontFamily: 'Roboto'),
                   validator: (value) {
                     if (value.isEmpty)
-                      return StringUtils.emptyCamp;
+                      return StringConstants.emptyCamp;
                     else if (value.length < 6)
-                      return StringUtils.incompleteCode;
+                      return StringConstants.incompleteCode;
                   },
                 ),
               )
@@ -128,7 +128,7 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text(StringUtils.processing)));
+                  SnackBar(content: Text(StringConstants.processing)));
               Navigator.pushNamed(context,
                   '/loginselect/numberscreen/numberverification/mainscreen');
             }
@@ -136,7 +136,7 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
           color: Colors.black,
           padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 30.0),
           child: Text(
-            StringUtils.verify,
+            StringConstants.verify,
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'Roboto',

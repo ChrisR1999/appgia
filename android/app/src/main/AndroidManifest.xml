@@ -15,8 +15,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:icon="@mipmap/ic_launcher"
-        android:label="app_trabajo">
+        android:icon="@mipmap/gia_launcher"
+        android:label="GIA Assistance">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCL8jE9rjF2ZRbyx7ymV_LXIFUF8eu1tkU"/>

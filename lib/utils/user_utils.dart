@@ -1,11 +1,14 @@
 class UserUtils {
-  static String name;
-  static String lastName;
-  static String number;
+  static String _name;
+  static String _mail;
+  static String _number;
+  static String _photo;
 
-  UserUtils(String userName, String userLastName, String userNumber) {
-    name = userName;
-    lastName = userLastName;
-    number = userNumber;
+  UserUtils({String name, String mail}) {
+    _name = name;
+    _mail = mail;
   }
+
+  static String getName(){ return _name;}
+  static String getMail(){ return _mail;}
 }
