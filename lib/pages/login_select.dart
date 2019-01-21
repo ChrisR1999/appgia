@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:app_trabajo/widgets/appbar.dart';
 import 'package:app_trabajo/styles/themedata_style.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:app_trabajo/login/googlelogin.dart';
 import 'package:app_trabajo/pages/number_screen.dart';
+import 'package:app_trabajo/pages/corporative_login.dart';
 import 'package:app_trabajo/shared_preferences/sharedpreferences.dart';
 
 
@@ -127,7 +127,7 @@ class _LoginSelectPage extends State<LoginSelectPage> {
             )),
       ),
     );
-    Future.delayed(new Duration(seconds: 5), () {
+    Future.delayed(new Duration(seconds: 3), () {
       Navigator.of(context, rootNavigator: true).pop();
       Navigator.pushNamed(context, '/loginselect/numberscreen');
     });

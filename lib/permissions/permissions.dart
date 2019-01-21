@@ -2,100 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 
-class PermissionsScreen extends StatefulWidget {
-  @override
-  _PermissionsScreen createState() => new _PermissionsScreen();
-}
+class Permissions {
+  String _platformVersion;
+  Permission _permission;
 
-class _PermissionsScreen extends State<PermissionsScreen> {
-  String _platformVersion = 'Unknown';
-  Permission permission;
-
-  @override
-  initState() {
-    super.initState();
+  Permissions({Permission permissionWanted}) {
     initPlatformState();
+    this._permission = permissionWanted;
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
   initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
+    String _platformVersion;
     try {
-      platformVersion = await SimplePermissions.platformVersion;
+      _platformVersion = await SimplePermissions.platformVersion;
+      print(_platformVersion);
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      _platformVersion = 'Failed to get platform version.';
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Plugin example app'),
-        ),
-        body: new Center(
-          child: new Column(children: <Widget>[
-            new Text('Running on: $_platformVersion\n'),
-            new DropdownButton(
-                items: _getDropDownItems(),
-                value: permission,
-                onChanged: onDropDownChanged),
-            new RaisedButton(
-                onPressed: checkPermission,
-                child: new Text("Check permission")),
-            new RaisedButton(
-                onPressed: requestPermission,
-                child: new Text("Request permission")),
-            new RaisedButton(
-                onPressed: getPermissionStatus,
-                child: new Text("Get permission status")),
-            new RaisedButton(
-                onPressed: SimplePermissions.openSettings,
-                child: new Text("Open settings"))
-          ]),
-        ),
-      ),
-    );
-  }
-
-  onDropDownChanged(Permission permission) {
-    setState(() => this.permission = permission);
-    print(permission);
   }
 
   requestPermission() async {
-    final res = await SimplePermissions.requestPermission(permission);
+    final res = await SimplePermissions.requestPermission(_permission);
     print("permission request result is " + res.toString());
   }
 
-  checkPermission() async {
-    bool res = await SimplePermissions.checkPermission(permission);
+ Future<bool> checkPermission() async {
+    bool res = await SimplePermissions.checkPermission(_permission);
     print("permission is " + res.toString());
+    return res;
   }
 
   getPermissionStatus() async {
-    final res = await SimplePermissions.getPermissionStatus(permission);
+    final res = await SimplePermissions.getPermissionStatus(_permission);
     print("permission status is " + res.toString());
-  }
-
-  List<DropdownMenuItem<Permission>> _getDropDownItems() {
-    List<DropdownMenuItem<Permission>> items = new List();
-    Permission.values.forEach((permission) {
-      var item = new DropdownMenuItem(
-          child: new Text(getPermissionString(permission)), value: permission);
-      items.add(item);
-    });
-    return items;
   }
 }

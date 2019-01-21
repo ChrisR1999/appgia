@@ -1,6 +1,11 @@
 abstract class StringConstants {
   static const String appBarTitle = 'GIA Assistent';
   static const String settingAppBarTitle = 'Configuración';
+  static const String userLabel = 'Número de Usuario *';
+  static const String setUser = 'Ingrese Número';
+  static const String passwordLabel = 'Contraseña *';
+  static const String setPassword = 'Ingrese Contraseña';
+  static const String userIncomplete = 'Número incompleto';
   static const String setPhoneNumber = 'Ingrese Número Celular';
   static const String number = 'Número *';
   static const String phonePrefix = '+52 ';
