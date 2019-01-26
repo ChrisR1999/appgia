@@ -18,17 +18,15 @@ public class MainActivity extends FlutterActivity {
 
         ViewTreeObserver vto = getFlutterView().getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+
             @Override
             public void onGlobalLayout() {
                 getFlutterView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             }
         });
-    }
 
-    @Override
-    public void onBackPressed() {
-        
-      }
+    }
 }

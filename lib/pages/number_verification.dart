@@ -1,26 +1,23 @@
-import 'package:app_trabajo/widgets/appbar.dart';
 import 'package:app_trabajo/styles/themedata_style.dart';
 import 'package:app_trabajo/pages/main_screen.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
+import 'package:app_trabajo/login/firebaselogin.dart';
 import 'package:flutter/material.dart';
 
 class NumberVerification extends StatelessWidget {
   final String number;
 
-  NumberVerification({this.number = "3318529246"});
+  NumberVerification({this.number});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: {
-        '/loginselect/numberscreen/numberverification/mainscreen': (context) =>
-            MainScreen(),
-      },
-      theme: ThemeDataStyle.getThemeData(),
+      debugShowCheckedModeBanner: false,
       title: StringConstants.appBarTitle,
+      theme: ThemeDataStyle.getThemeData(),
       home: Scaffold(
-        appBar: AppBarWidget.getAppBar(),
-        body: _NumberVerificationForm(number),
+        resizeToAvoidBottomPadding: false,
+        body: _NumberVerificationForm(number, context),
       ),
     );
   }
@@ -28,8 +25,9 @@ class NumberVerification extends StatelessWidget {
 
 class _NumberVerificationForm extends StatefulWidget {
   final String number;
+  final BuildContext context;
 
-  _NumberVerificationForm(this.number);
+  _NumberVerificationForm(this.number, this.context);
 
   @override
   State<StatefulWidget> createState() {
@@ -39,6 +37,29 @@ class _NumberVerificationForm extends StatefulWidget {
 
 class __NumberVerificationFormState extends State<_NumberVerificationForm> {
   final _formKey = GlobalKey<FormState>();
+  bool _enableButton = false;
+  Color _colorButton = Colors.grey;
+  SmsVerification _smsVerification;
+  TextEditingController _verifyController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _smsVerification = new SmsVerification(
+        number: (widget.number),
+        onWaiting: _callSnackBarOnWaiting,
+        onAutomaticSuccess: _callSnackBarOnAutomaticSuccess,
+        onAutomaticFailure: _callSnackBarOnAutomaticFailure,
+        onManualSuccess: _callSnackBarOnManualSuccess,
+        onManualFailure: _callSnackBarOnManualFailure,
+        onErrorMessage: _callSnackBarrOnErrorMessage);
+    _smsVerification.sendCodeToPhoneNumber().then((onValue) {
+      setState(() {
+        _enableButton = true;
+        _colorButton = Colors.black;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +72,9 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              _setBackButton(),
+              _setTitleLabel(),
+              _setNumberLabel(),
               _setNumberField(),
               _setVerifyCodeField(),
               _setVerifyButton()
@@ -61,9 +85,56 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
     );
   }
 
+  Widget _setBackButton() {
+    return Container(
+      padding: EdgeInsets.only(top: 15.0),
+      child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+        IconButton(
+          onPressed: () {
+            Navigator.pop(widget.context);
+          },
+          color: Colors.black,
+          icon: Icon(
+            Icons.arrow_back,
+            size: 32.0,
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Widget _setTitleLabel() {
+    return Container(
+        padding: EdgeInsets.only(left: 25.0, top: 10.0),
+        child: Row(
+          children: <Widget>[
+            Text(StringConstants.setVerificationCode,
+                style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 22.0,
+                    letterSpacing: 0.1,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Roboto'))
+          ],
+        ));
+  }
+
+  Widget _setNumberLabel() {
+    return Container(
+        padding: EdgeInsets.only(left: 25.0, top: 30.0),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+          Text(
+            StringConstants.numberSended,
+            style:
+                TextStyle(color: Colors.black38, fontWeight: FontWeight.w400),
+          )
+        ]));
+  }
+
   Widget _setNumberField() {
     return Container(
-        padding: EdgeInsets.only(left: 15.0, right: 25.0),
+        padding: EdgeInsets.only(left: 10.0, right: 20.0),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -74,12 +145,12 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
                       Icons.phone_android,
                       color: Colors.black,
                     ),
-                    labelText: '+523318529246',
+                    labelText: widget.number,
                   ),
                   style: TextStyle(
                       color: Colors.black54,
                       fontSize: 20.0,
-                      letterSpacing: 0.3,
+                      letterSpacing: 1.0,
                       fontFamily: 'Roboto'),
                   enabled: false,
                 ),
@@ -90,12 +161,13 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
   Widget _setVerifyCodeField() {
     return Container(
         margin: EdgeInsets.only(top: 20.0),
-        padding: EdgeInsets.only(left: 15.0, right: 25.0),
+        padding: EdgeInsets.only(left: 10.0, right: 20.0),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: TextFormField(
+                  controller: _verifyController,
                   decoration: InputDecoration(
                     icon: Icon(
                       Icons.message,
@@ -103,6 +175,8 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
                     ),
                     labelText: StringConstants.code,
                     hintText: StringConstants.verifyCode,
+                    counterText: '',
+                    counterStyle: TextStyle(fontSize: 0),
                   ),
                   maxLength: 6,
                   style: TextStyle(
@@ -116,6 +190,7 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
                     else if (value.length < 6)
                       return StringConstants.incompleteCode;
                   },
+                  keyboardType: TextInputType.phone,
                 ),
               )
             ]));
@@ -124,25 +199,81 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
   Widget _setVerifyButton() {
     return Container(
         margin: EdgeInsets.only(top: 30.0),
-        child: RaisedButton(
-          onPressed: () {
-            if (_formKey.currentState.validate()) {
-              Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text(StringConstants.processing)));
-              Navigator.pushNamed(context,
-                  '/loginselect/numberscreen/numberverification/mainscreen');
-            }
-          },
-          color: Colors.black,
-          padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 30.0),
-          child: Text(
-            StringConstants.verify,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Roboto',
-              fontSize: 20.0,
-            ),
-          ),
-        ));
+        child: Padding(
+            padding: EdgeInsets.only(left: 25.0, right: 25.0),
+            child: Row(children: <Widget>[
+              Expanded(
+                  child: RaisedButton(
+                onPressed: () {
+                  _onPressedVerifyButton();
+                },
+                color: _colorButton,
+                padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 30.0),
+                child: Text(
+                  StringConstants.verify,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Roboto',
+                    fontSize: 20.0,
+                  ),
+                ),
+              ))
+            ])));
+  }
+
+  Future<void> _onPressedVerifyButton() async {
+    if (_enableButton) {
+      if (_formKey.currentState.validate()) {
+        await _smsVerification.signInWithPhoneNumber(_verifyController.text);
+      }
+    }
+  }
+
+  void _callSnackBarOnWaiting() {
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text(StringConstants.checkingNumber)));
+    Future.delayed(new Duration(seconds: 2), () {});
+  }
+
+  void _callSnackBarOnAutomaticSuccess() {
+    Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text(StringConstants.successAutomaticNumber)));
+    Future.delayed(new Duration(seconds: 3), () {
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+      );
+    });
+  }
+
+  void _callSnackBarOnAutomaticFailure() {
+    Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text(StringConstants.failureAutomaticNumber)));
+    Future.delayed(new Duration(seconds: 2), () {});
+  }
+
+  void _callSnackBarOnManualSuccess() {
+    Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text(StringConstants.successManualNumber)));
+    Future.delayed(new Duration(seconds: 3), () {
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainScreen()),
+      );
+    });
+  }
+
+  void _callSnackBarOnManualFailure() {
+    Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text(StringConstants.failureManualNumber)));
+    Future.delayed(new Duration(seconds: 2), () {});
+  }
+
+  void _callSnackBarrOnErrorMessage() {
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text(StringConstants.errorMessage)));
+    Future.delayed(new Duration(seconds: 2), () {});
   }
 }

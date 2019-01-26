@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 
@@ -17,23 +16,23 @@ class Permissions {
       _platformVersion = await SimplePermissions.platformVersion;
       print(_platformVersion);
     } on PlatformException {
-      _platformVersion = 'Failed to get platform version.';
+      _platformVersion = 'Error al obtener plataforma.';
     }
   }
 
   requestPermission() async {
     final res = await SimplePermissions.requestPermission(_permission);
-    print("permission request result is " + res.toString());
+    print("Resultado de pedir localización: " + res.toString());
   }
 
  Future<bool> checkPermission() async {
     bool res = await SimplePermissions.checkPermission(_permission);
-    print("permission is " + res.toString());
+    print("El permiso esta en:  " + res.toString());
     return res;
   }
 
   getPermissionStatus() async {
     final res = await SimplePermissions.getPermissionStatus(_permission);
-    print("permission status is " + res.toString());
+    print("El estatus del permiso es: " + res.toString());
   }
 }

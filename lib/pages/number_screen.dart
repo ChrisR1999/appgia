@@ -1,24 +1,17 @@
-import 'package:app_trabajo/widgets/appbar.dart';
 import 'package:app_trabajo/styles/themedata_style.dart';
 import 'package:app_trabajo/pages/number_verification.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
-import 'package:app_trabajo/utils/user_utils.dart';
 import 'package:flutter/material.dart';
 
 class NumberScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('Nombre: ' + UserUtils.getName());
-    print('Email: ' + UserUtils.getMail());
     return MaterialApp(
-      routes: {
-        '/loginselect/numberscreen/numberverification': (context) =>
-            NumberVerification()
-      },
+      debugShowCheckedModeBanner: false,
       title: StringConstants.appBarTitle,
       theme: ThemeDataStyle.getThemeData(),
       home: Scaffold(
-        appBar: AppBarWidget.getAppBar(),
+        resizeToAvoidBottomPadding: false,
         body: _NumberForm(),
       ),
     );
@@ -33,6 +26,7 @@ class _NumberForm extends StatefulWidget {
 }
 
 class __NumberFormState extends State<_NumberForm> {
+  final TextEditingController _textEditController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -41,75 +35,134 @@ class __NumberFormState extends State<_NumberForm> {
       key: _formKey,
       child: Center(
         child: Container(
-          padding: EdgeInsets.only(top: 10.0),
+          padding: EdgeInsets.only(top: 40.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[_setTextField(), _setSendButton()],
+            children: <Widget>[
+              _setNumberTitle(),
+              _setNumberField(),
+              _setMessageAdvertisment(),
+              _setSendButton(),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _setTextField() {
+  Widget _setNumberTitle() {
     return Container(
-        padding: EdgeInsets.only(left: 10.0, right: 20.0),
+        padding: EdgeInsets.only(left: 25.0, top: 25.0),
+        child: Row(
+          children: <Widget>[
+            Text(StringConstants.setPhoneNumber,
+                style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 22.0,
+                    letterSpacing: 0.1,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Roboto'))
+          ],
+        ));
+  }
+
+  Widget _setNumberField() {
+    return Container(
+        padding: EdgeInsets.only(left: 10.0, right: 20.0, top: 25.0),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    icon: Icon(
-                      Icons.phone_android,
-                      color: Colors.black,
-                    ),
-                    hintText: StringConstants.setPhoneNumber,
-                    labelText: StringConstants.number,
-                  ),
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 20.0,
-                      letterSpacing: 0.3,
-                      fontFamily: 'Roboto'),
-                  maxLength: 13,
-                  keyboardType: TextInputType.phone,
-                  validator: (value) {
-                    if (value.isEmpty)
-                      return StringConstants.emptyCamp;
-                    else if (!(value.contains('+')))
-                      return StringConstants.prefixIncomplete;
-                    else if (value.length < 13)
-                      return StringConstants.incompleteNumber;
-                  },
-                ),
-              )
+                child: Padding(
+                    padding: EdgeInsets.only(left: 15.0, right: 10.0),
+                    child: TextFormField(
+                      controller: _textEditController,
+                      decoration: InputDecoration(
+                        icon: Text(
+                          StringConstants.phonePrefix,
+                          style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 20.0,
+                              letterSpacing: 1.0,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Roboto'),
+                        ),
+                        hintStyle: TextStyle(
+                            color: Colors.black45,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Roboto'),
+                        hintText: StringConstants.setPhoneNumber,
+                        counterText: '',
+                        counterStyle: TextStyle(fontSize: 0),
+                      ),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 22.0,
+                          letterSpacing: 1.5,
+                          fontFamily: 'Roboto'),
+                      maxLength: 10,
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value.isEmpty) return StringConstants.emptyCamp;
+                        if (value.length < 10)
+                          return StringConstants.incompleteNumber;
+                      },
+                    )),
+              ),
             ]));
+  }
+
+  Widget _setMessageAdvertisment() {
+    return Padding(
+        padding: EdgeInsets.only(left: 25.0, right: 20.0),
+        child: Text(
+          StringConstants.messageAdvertisement,
+          style: TextStyle(color: Colors.black38, fontWeight: FontWeight.w400),
+        ));
   }
 
   Widget _setSendButton() {
     return Container(
-        margin: EdgeInsets.only(top: 30.0),
-        child: RaisedButton(
-          onPressed: () {
-            if (_formKey.currentState.validate()) {
-              Scaffold.of(context).showSnackBar(
-                  SnackBar(content: Text(StringConstants.processing)));
-              Navigator.pushNamed(
-                  context, '/loginselect/numberscreen/numberverification');
-            }
-          },
-          color: Colors.black,
-          padding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 30.0),
-          child: Text(
-            StringConstants.send,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Roboto',
-              fontSize: 20.0,
-            ),
-          ),
-        ));
+      margin: EdgeInsets.only(top: 25.0),
+      child: Padding(
+          padding: EdgeInsets.only(left: 30.0, right: 30.0),
+          child: Row(children: <Widget>[
+            Expanded(
+                child: RaisedButton(
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  callSnackBar();
+                }
+              },
+              color: Colors.black,
+              padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 30.0),
+              child: Text(
+                StringConstants.send,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Roboto',
+                  fontSize: 20.0,
+                ),
+              ),
+            ))
+          ])),
+    );
+  }
+
+  void callSnackBar() {
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text(StringConstants.sendingMessage)));
+    Future.delayed(new Duration(seconds: 3), () {
+      Scaffold.of(context).hideCurrentSnackBar();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NumberVerification(
+                  number:
+                      (StringConstants.phonePrefix + _textEditController.text),
+                )),
+      );
+    });
   }
 }

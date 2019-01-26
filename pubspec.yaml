@@ -23,11 +23,12 @@ dependencies:
   firebase_core: ^0.2.5+1
   simple_permissions: ^0.1.9
   firebase_messaging: ^2.1.0
+  cloud_firestore: ^0.8.2+3
+  geolocator: ^2.1.1
   google_maps_flutter: ^0.0.3+3
   google_sign_in: ^3.2.4
   shared_preferences: ^0.4.3
-  http: ^0.12.0
- 
+  http: ^0.12.0+1
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +56,11 @@ flutter:
     - images/salud.png
     - images/guardia.png
     - images/pCivil.png
+    - images/seguridadgia.jpg
+    - images/escalera.jpg
+    - images/bottom1.jpg
+    - images/bottom2.jpg
+    - images/bottom3.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

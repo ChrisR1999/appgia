@@ -7,7 +7,9 @@ abstract class SharedGia {
   static int _activeLogin;
 
   static Future<void> initShared() async {
-    _prefs = await SharedPreferences.getInstance();
+    _prefs = await SharedPreferences.getInstance().catchError((onError){
+      return onError;
+    });
   }
 
   static int getActiveLogin() {
@@ -17,6 +19,10 @@ abstract class SharedGia {
 
   static void setActiveLogin(int login) async {
     _activeLogin = login;
-    await _prefs.setInt(SharedConstants.activeLogin, login);
+    await _prefs.setInt(SharedConstants.activeLogin, login).catchError((onError){
+      return onError;
+    });
   }
+
+
 }

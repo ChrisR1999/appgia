@@ -17,6 +17,22 @@ abstract class AppBarWidget {
     );
   }
 
+  
+  static AppBar getNumberScreenVerificationAppBar(context) {
+    return AppBar(
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        color: Colors.white,
+        icon: Icon(
+          Icons.keyboard_arrow_left,
+          size: 40.0,
+        ),
+      ),
+    );
+  }
+
   static AppBar getSettingsAppBar(context) {
     return AppBar(
       leading: IconButton(

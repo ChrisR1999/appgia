@@ -1,3 +1,4 @@
+import 'package:app_trabajo/styles/themedata_style.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:app_trabajo/widgets/appbar.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,11 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: StringConstants.settingAppBarTitle,
+      debugShowCheckedModeBanner: false,
+        title: StringConstants.appBarTitle,
+        theme: ThemeDataStyle.getThemeData(),
+        
+        
         home: Scaffold(
             appBar: AppBarWidget.getSettingsAppBar(context),
             body: Padding(

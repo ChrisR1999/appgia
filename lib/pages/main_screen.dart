@@ -10,23 +10,25 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     new DisplayUtils(context);
-    return MaterialApp(routes: {
-      '/loginselect/numberscreen/numberverification/mainscreen/settings':
-          (context) => SettingsScreen(),
-    }, 
-    theme: ThemeDataStyle.getThemeData(),
-    home: _MainScreen());
+    return MaterialApp(
+        routes: {
+          '/loginselect/numberscreen/numberverification/mainscreen/settings':
+              (context) => SettingsScreen(),
+        },
+        debugShowCheckedModeBanner: false,
+        title: StringConstants.appBarTitle,
+        theme: ThemeDataStyle.getThemeData(),
+        home: _MainScreen());
   }
 }
 
 class _MainScreen extends StatelessWidget {
-  double sizeX;
+  final double sizeX = (DisplayUtils.getSizeX()) / 3.0;
 
   @override
   Widget build(BuildContext context) {
-    sizeX = (DisplayUtils.getSizeX()) / 3.0;
-
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBarWidget.getAppBar(),
       body: Center(
           child: Container(
@@ -45,40 +47,47 @@ class _MainScreen extends StatelessWidget {
 
   Widget _buildPanicButtons(double sizeX) {
     return Container(
-      decoration: BoxDecoration(color: Colors.pink[800]),
-      child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        Container(
-            padding: EdgeInsets.only(top: 12.0, bottom: 18.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                PanicButton(
-                  imageRoute: PanicConstants.healthImageRoute,
-                  label: PanicConstants.healthPanicLabel,
-                  typeOfAlert: PanicConstants.healthPanicIndicator,
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage("images/escalera.jpg"),
+                  fit: BoxFit.cover,
+                )),
+                padding: EdgeInsets.only(top: 12.0, bottom: 18.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    PanicButton(
+                      imageRoute: PanicConstants.healthImageRoute,
+                      label: PanicConstants.healthPanicLabel,
+                      typeOfAlert: PanicConstants.healthPanicIndicator,
+                    ),
+                    PanicButton(
+                      imageRoute: PanicConstants.securityImageRoute,
+                      label: PanicConstants.securityPanicLabel,
+                      typeOfAlert: PanicConstants.securityPanicIndicator,
+                    ),
+                    PanicButton(
+                      imageRoute: PanicConstants.protectionImageRoute,
+                      label: PanicConstants.protectionPanicLabel,
+                      typeOfAlert: PanicConstants.protectionPanicIndicator,
+                    ),
+                  ],
+                )),
+            Row(children: <Widget>[
+              Expanded(
+                child: Image.asset(
+                  'images/bottomPanic.png',
+                  height: sizeX - (sizeX * 0.10),
+                  fit: BoxFit.fill,
                 ),
-                PanicButton(
-                  imageRoute: PanicConstants.securityImageRoute,
-                  label: PanicConstants.securityPanicLabel,
-                  typeOfAlert: PanicConstants.securityPanicIndicator,
-                ),
-                PanicButton(
-                  imageRoute: PanicConstants.protectionImageRoute,
-                  label: PanicConstants.protectionPanicLabel,
-                  typeOfAlert: PanicConstants.protectionPanicIndicator,
-                ),
-              ],
-            )),
-        Row(children: <Widget>[
-          Expanded(
-            child: Image.asset(
-              'images/bottomPanic.png',
-              height: sizeX * 0.8,
-              fit: BoxFit.fill,
-            ),
-          )
-        ])
-      ]),
+              )
+            ])
+          ]),
     );
   }
 
@@ -86,8 +95,8 @@ class _MainScreen extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: 15.0, right: 15.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Column(
                 mainAxisSize: MainAxisSize.max,

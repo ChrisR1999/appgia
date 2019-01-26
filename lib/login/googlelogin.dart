@@ -5,15 +5,13 @@ import 'package:app_trabajo/utils/user_utils.dart';
 class GoogleLogin {
   GoogleSignIn _googleSignIn;
   GoogleSignInAccount _currentUser;
-  UserUtils user;
 
   GoogleLogin() {
     _setScopes();
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
       _currentUser = account;
-      user = new UserUtils(
-          name: _currentUser.displayName, mail: _currentUser.email
-          );
+      UserUtils.name = _currentUser.displayName;
+      UserUtils.mail = _currentUser.email;
     });
   }
 
@@ -43,11 +41,12 @@ class GoogleLogin {
   Future<bool> isUserLogged() async {
     return await _googleSignIn.signInSilently().then((onValue) {
       if (onValue == null) {
-        print("adios");
+        print("Error al recuperar sesión previa");
         return false;
       } else {
-        print("hola");
-        new UserUtils(name: onValue.displayName, mail: onValue.email);
+        print("Sesión iniciada previamente");
+        UserUtils.name = onValue.displayName;
+        UserUtils.mail = onValue.email;
         return true;
       }
     });
