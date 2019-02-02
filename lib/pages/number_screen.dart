@@ -1,53 +1,46 @@
-import 'package:app_trabajo/styles/themedata_style.dart';
 import 'package:app_trabajo/pages/number_verification.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:flutter/material.dart';
 
-class NumberScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: StringConstants.appBarTitle,
-      theme: ThemeDataStyle.getThemeData(),
-      home: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: _NumberForm(),
-      ),
-    );
-  }
-}
-
-class _NumberForm extends StatefulWidget {
+class NumberScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return __NumberFormState();
+    return __NumberScreenState();
   }
 }
 
-class __NumberFormState extends State<_NumberForm> {
+class __NumberScreenState extends State<NumberScreen> {
   final TextEditingController _textEditController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  BuildContext scaffoldContext;
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Center(
-        child: Container(
-          padding: EdgeInsets.only(top: 40.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _setNumberTitle(),
-              _setNumberField(),
-              _setMessageAdvertisment(),
-              _setSendButton(),
-            ],
+    return WillPopScope(
+      child: Scaffold(body: Builder(builder: (BuildContext scaffoldContext) {
+        this.scaffoldContext = scaffoldContext;
+        return Form(
+          key: _formKey,
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.only(top: 40.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _setNumberTitle(),
+                  _setNumberField(),
+                  _setMessageAdvertisment(),
+                  _setSendButton(),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      })),
+      onWillPop: () {
+        Future(() => false);
+      },
     );
   }
 
@@ -60,7 +53,6 @@ class __NumberFormState extends State<_NumberForm> {
                 style: TextStyle(
                     color: Colors.black54,
                     fontSize: 22.0,
-                    letterSpacing: 0.1,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Roboto'))
           ],
@@ -76,7 +68,8 @@ class __NumberFormState extends State<_NumberForm> {
               Expanded(
                 child: Padding(
                     padding: EdgeInsets.only(left: 15.0, right: 10.0),
-                    child: TextFormField(
+                    child: Material(
+                        child: TextFormField(
                       controller: _textEditController,
                       decoration: InputDecoration(
                         icon: Text(
@@ -108,7 +101,7 @@ class __NumberFormState extends State<_NumberForm> {
                         if (value.length < 10)
                           return StringConstants.incompleteNumber;
                       },
-                    )),
+                    ))),
               ),
             ]));
   }
@@ -151,14 +144,14 @@ class __NumberFormState extends State<_NumberForm> {
   }
 
   void callSnackBar() {
-    Scaffold.of(context)
+    Scaffold.of(scaffoldContext)
         .showSnackBar(SnackBar(content: Text(StringConstants.sendingMessage)));
     Future.delayed(new Duration(seconds: 3), () {
-      Scaffold.of(context).hideCurrentSnackBar();
+      Scaffold.of(scaffoldContext).hideCurrentSnackBar();
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => NumberVerification(
+            builder: (context) => NumberVerificationScreen(
                   number:
                       (StringConstants.phonePrefix + _textEditController.text),
                 )),

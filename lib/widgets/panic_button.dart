@@ -22,7 +22,7 @@ class PanicButton extends StatefulWidget {
 class _PanicButton extends State<PanicButton> {
   bool _enabled;
   Color _colorState;
-  PanicModel _request = new PanicModel();
+  PanicRequest _request = new PanicRequest();
 
   @override
   void initState() {
@@ -49,10 +49,10 @@ class _PanicButton extends State<PanicButton> {
                     print(widget.typeOfAlert);
                     _colorState = Colors.red[800];
                     _enabled = false;
-                    _request = new PanicModel(
-                        id: UserUtils.firebaseId,
-                        name: UserUtils.name,
-                        number: UserUtils.number,
+                    _request = new PanicRequest(
+                        id: "1a2s3dfhgkfhfncx3445",
+                        name: "Chris",
+                        number: "+3318529246",
                         latitude: location.latitude,
                         longitude: location.longitude,
                         typeOfPanic: widget.typeOfAlert);

@@ -1,45 +1,25 @@
-import 'package:app_trabajo/styles/themedata_style.dart';
 import 'package:app_trabajo/pages/main_screen.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:app_trabajo/login/firebaselogin.dart';
 import 'package:flutter/material.dart';
 
-class NumberVerification extends StatelessWidget {
+class NumberVerificationScreen extends StatefulWidget {
   final String number;
 
-  NumberVerification({this.number});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: StringConstants.appBarTitle,
-      theme: ThemeDataStyle.getThemeData(),
-      home: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: _NumberVerificationForm(number, context),
-      ),
-    );
-  }
-}
-
-class _NumberVerificationForm extends StatefulWidget {
-  final String number;
-  final BuildContext context;
-
-  _NumberVerificationForm(this.number, this.context);
+  NumberVerificationScreen({this.number});
 
   @override
   State<StatefulWidget> createState() {
-    return __NumberVerificationFormState();
+    return _NumberVerificationScreenState();
   }
 }
 
-class __NumberVerificationFormState extends State<_NumberVerificationForm> {
+class _NumberVerificationScreenState extends State<NumberVerificationScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _enableButton = false;
   Color _colorButton = Colors.grey;
   SmsVerification _smsVerification;
+  BuildContext scaffoldContext;
   TextEditingController _verifyController = TextEditingController();
 
   @override
@@ -58,31 +38,37 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
         _enableButton = true;
         _colorButton = Colors.black;
       });
+    }).catchError((onError) {
+      print(onError);
+      _callSnackBarrOnErrorMessage();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Center(
-        child: Container(
-          padding: EdgeInsets.only(top: 10.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _setBackButton(),
-              _setTitleLabel(),
-              _setNumberLabel(),
-              _setNumberField(),
-              _setVerifyCodeField(),
-              _setVerifyButton()
-            ],
+    return Scaffold(body: Builder(builder: (BuildContext scaffoldContext) {
+      this.scaffoldContext = scaffoldContext;
+      return Form(
+        key: _formKey,
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.only(top: 10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                _setBackButton(),
+                _setTitleLabel(),
+                _setNumberLabel(),
+                _setNumberField(),
+                _setVerifyCodeField(),
+                _setVerifyButton()
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    }));
   }
 
   Widget _setBackButton() {
@@ -91,7 +77,7 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
       child: Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
         IconButton(
           onPressed: () {
-            Navigator.pop(widget.context);
+            Navigator.pop(context);
           },
           color: Colors.black,
           icon: Icon(
@@ -230,13 +216,13 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
   }
 
   void _callSnackBarOnWaiting() {
-    Scaffold.of(context)
+    Scaffold.of(scaffoldContext)
         .showSnackBar(SnackBar(content: Text(StringConstants.checkingNumber)));
     Future.delayed(new Duration(seconds: 2), () {});
   }
 
   void _callSnackBarOnAutomaticSuccess() {
-    Scaffold.of(context).showSnackBar(
+    Scaffold.of(scaffoldContext).showSnackBar(
         SnackBar(content: Text(StringConstants.successAutomaticNumber)));
     Future.delayed(new Duration(seconds: 3), () {
       Navigator.pop(context);
@@ -248,13 +234,13 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
   }
 
   void _callSnackBarOnAutomaticFailure() {
-    Scaffold.of(context).showSnackBar(
+    Scaffold.of(scaffoldContext).showSnackBar(
         SnackBar(content: Text(StringConstants.failureAutomaticNumber)));
     Future.delayed(new Duration(seconds: 2), () {});
   }
 
   void _callSnackBarOnManualSuccess() {
-    Scaffold.of(context).showSnackBar(
+    Scaffold.of(scaffoldContext).showSnackBar(
         SnackBar(content: Text(StringConstants.successManualNumber)));
     Future.delayed(new Duration(seconds: 3), () {
       Navigator.pop(context);
@@ -266,13 +252,13 @@ class __NumberVerificationFormState extends State<_NumberVerificationForm> {
   }
 
   void _callSnackBarOnManualFailure() {
-    Scaffold.of(context).showSnackBar(
+    Scaffold.of(scaffoldContext).showSnackBar(
         SnackBar(content: Text(StringConstants.failureManualNumber)));
     Future.delayed(new Duration(seconds: 2), () {});
   }
 
   void _callSnackBarrOnErrorMessage() {
-    Scaffold.of(context)
+    Scaffold.of(scaffoldContext)
         .showSnackBar(SnackBar(content: Text(StringConstants.errorMessage)));
     Future.delayed(new Duration(seconds: 2), () {});
   }

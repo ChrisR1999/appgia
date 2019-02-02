@@ -3,10 +3,9 @@ import 'package:app_trabajo/widgets/appbar.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:app_trabajo/login/googlelogin.dart';
 import 'package:app_trabajo/pages/number_screen.dart';
-import 'package:app_trabajo/pages/corporative_login.dart';
+import 'package:app_trabajo/pages/corporative_login_screen.dart';
 import 'package:app_trabajo/utils/display_utils.dart';
 import 'package:app_trabajo/shared_preferences/sharedpreferences.dart';
-
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,18 +15,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreen extends State<LoginScreen> {
-  double sizeY = DisplayUtils.getSizeY() / 3.6;
+  double sizeY;
+  BuildContext scaffoldContext;
 
   @override
   Widget build(BuildContext context) {
+    new DisplayUtils(context);
+    sizeY = DisplayUtils.getSizeY() / 3.6;
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: AppBarWidget.getAppBar(),
-        body: Builder(builder: (BuildContext contextS) {
-          return Center(child: _createLoginButtons(contextS));
+        body: Builder(builder: (BuildContext scaffoldContext) {
+          this.scaffoldContext = scaffoldContext;
+          return Center(child: _createLoginButtons());
         }));
   }
 
-  Widget _createLoginButtons(contextS) {
+  Widget _createLoginButtons() {
     return Container(
         child: Column(
       mainAxisSize: MainAxisSize.max,
@@ -35,7 +39,7 @@ class _LoginScreen extends State<LoginScreen> {
       children: <Widget>[
         FlatButton(
           onPressed: () {
-            _setLogin(LoginConstants.googleLogin, contextS);
+            _setLogin(LoginConstants.googleLogin);
             print("GoogleLogin");
           },
           shape: CircleBorder(),
@@ -48,7 +52,7 @@ class _LoginScreen extends State<LoginScreen> {
         ),
         FlatButton(
             onPressed: () {
-              _setLogin(LoginConstants.iosLogin, contextS);
+              _setLogin(LoginConstants.iosLogin);
               print("IOSLogin");
             },
             shape: CircleBorder(),
@@ -60,7 +64,7 @@ class _LoginScreen extends State<LoginScreen> {
             )),
         FlatButton(
             onPressed: () {
-              _setLogin(LoginConstants.corporativeLogin, contextS);
+              _setLogin(LoginConstants.corporativeLogin);
               print("CorporativeLogin");
             },
             shape: CircleBorder(),
@@ -74,7 +78,7 @@ class _LoginScreen extends State<LoginScreen> {
     ));
   }
 
-  void _setLogin(String opc, contextS) {
+  void _setLogin(String opc) {
     bool loginStatus;
     switch (opc) {
       case LoginConstants.googleLogin:
@@ -83,7 +87,7 @@ class _LoginScreen extends State<LoginScreen> {
           loginStatus = value;
           if (loginStatus) {
             SharedGia.setActiveLogin(SharedConstants.googleLogin);
-            _callSnackBaronLoading(contextS);
+            _callSnackBaronLoading();
           }
         });
         break;
@@ -94,11 +98,11 @@ class _LoginScreen extends State<LoginScreen> {
     }
   }
 
-  void _callSnackBaronLoading(contextS) {
-    Scaffold.of(contextS)
+  void _callSnackBaronLoading() {
+    Scaffold.of(scaffoldContext)
         .showSnackBar(SnackBar(content: Text(StringConstants.loginMessage)));
     Future.delayed(new Duration(seconds: 3), () {
-      Scaffold.of(contextS).hideCurrentSnackBar();
+      Scaffold.of(scaffoldContext).hideCurrentSnackBar();
       Navigator.of(context).pop();
       Navigator.push(
         context,

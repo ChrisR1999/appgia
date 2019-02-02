@@ -74,7 +74,7 @@ class SmsVerification {
         .signInWithPhoneNumber(verificationId: verificationId, smsCode: smsCode)
         .then((FirebaseUser _user) async {
       if (_user != null) {
-        UserUtils.firebaseId = _user.uid;
+        UserUtils.name = _user.uid;
         UserUtils.number = _user.phoneNumber;
         print(
             "Logeo con introducción de codigo SMS manual: exitoso con el número:" +

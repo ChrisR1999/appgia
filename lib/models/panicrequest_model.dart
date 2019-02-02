@@ -1,4 +1,4 @@
-class PanicModel {
+class PanicRequest {
   String id;
   String name;
   String number;
@@ -6,22 +6,23 @@ class PanicModel {
   double longitude;
   String typeOfPanic;
 
-  PanicModel(
+  PanicRequest(
       {this.id,
       this.name,
       this.number,
       this.latitude,
       this.longitude,
       this.typeOfPanic});
-  
 
-  Map<String, dynamic> toJson() =>
-    {
-      'id': id,
-      'name': name,
-      'number': number,
-      'latitude': latitude,
-      'longitude': longitude,
-      'panic': typeOfPanic
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> data = {
+      'id': this.id,
+      'name': this.name,
+      'number': this.number,
+      'latitude': this.latitude.toString(),
+      'longitude': this.longitude.toString(),
+      'panic': this.typeOfPanic
     };
+    return data;
+  }
 }

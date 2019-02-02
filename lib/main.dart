@@ -25,7 +25,7 @@ void main() async {
         debugShowCheckedModeBanner: false,
         title: StringConstants.appBarTitle,
         theme: ThemeDataStyle.getThemeData(),
-        home: LoginScreen(),
+        home: MainScreen(),
       ));
     } else {
       runApp(MaterialApp(

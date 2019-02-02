@@ -16,7 +16,7 @@ public class MainActivity extends FlutterActivity {
 
         GeneratedPluginRegistrant.registerWith(this);
 
-        ViewTreeObserver vto = getFlutterView().getViewTreeObserver();
+        /*ViewTreeObserver vto = getFlutterView().getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
             @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -26,7 +26,6 @@ public class MainActivity extends FlutterActivity {
                 getFlutterView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             }
-        });
-
+        });*/
     }
 }
