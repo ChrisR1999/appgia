@@ -58,9 +58,15 @@ flutter:
     - images/pCivil.png
     - images/seguridadgia.jpg
     - images/escalera.jpg
-    - images/bottom1.jpg
+    - images/bottom1.png
     - images/bottom2.jpg
     - images/bottom3.jpg
+    - images/header.png
+    - images/fondo_proteccion.png
+    - images/fondo_medicina.png
+    - images/fondo_medicina1.png
+    - images/fondo_guardia.png
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

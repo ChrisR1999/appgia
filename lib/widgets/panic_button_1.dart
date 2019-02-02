@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:app_trabajo/utils/display_utils.dart';
@@ -12,6 +11,7 @@ class PanicButton extends StatefulWidget {
   final String label;
   final String typeOfAlert;
   final String imageRoute;
+  final String backgroundImageRoute;
   final Function blockButtons;
   final Function enableButtons;
 
@@ -20,6 +20,7 @@ class PanicButton extends StatefulWidget {
       this.label,
       this.typeOfAlert,
       this.imageRoute,
+      this.backgroundImageRoute,
       this.blockButtons,
       this.enableButtons});
 
@@ -43,6 +44,23 @@ class _PanicButton extends State<PanicButton> {
     _colorState = Color(0xFF1D1F1E);
   }
 
+  void onResponse() {
+    if (_buttonState == 2)
+      setState(() {
+        _buttonState = 3;
+        _colorState = Colors.yellow[800];
+      });
+  }
+
+  void onComplete() {
+    if (_buttonState == 3)
+      setState(() {
+        _buttonState = 4;
+        _colorState = Colors.green[800];
+        widget.enableButtons();
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     sizeX = DisplayUtils.getSizeX() / 3.2;
@@ -55,15 +73,18 @@ class _PanicButton extends State<PanicButton> {
         width: sizeX,
         height: sizeX * 1.5,
         decoration: BoxDecoration(
-          color: _colorState,
-          borderRadius: BorderRadius.circular(10.0),
+          image: DecorationImage(
+              image: AssetImage(widget.backgroundImageRoute),
+              colorFilter: ColorFilter.mode(_colorState, BlendMode.color),
+              fit: BoxFit.cover),
+          borderRadius: BorderRadius.circular(6.0),
         ),
         child: MaterialButton(
             onPressed: () {
               if (_enabled) {
                 setState(() {
-                  _buttonState = 1;
                   print("Bloqueando botones");
+                  _buttonState = 1;
                   widget.blockButtons();
                   askForService();
                 });
@@ -81,14 +102,14 @@ class _PanicButton extends State<PanicButton> {
         children: <Widget>[
           Image.asset(
             widget.imageRoute,
-            width: (sizeX - (sizeX * 0.10)),
+            width: (sizeX - (sizeX * 0.05)),
             fit: BoxFit.contain,
           ),
           Text(
             widget.label,
             style: TextStyle(
                 color: Colors.white70,
-                fontSize: 16.0,
+                fontSize: 15.5,
                 letterSpacing: 1.0,
                 fontWeight: FontWeight.bold),
           )
@@ -115,11 +136,11 @@ class _PanicButton extends State<PanicButton> {
           alignment: AlignmentDirectional.center,
           children: <Widget>[
             mainColumnPanicButton,
-            Icon(
+            /*Icon(
               Icons.check,
-              color: Colors.white,
+              color: Colors.black,
               size: (sizeX / 2.0),
-            )
+            )*/
           ],
         );
         break;
@@ -136,40 +157,49 @@ class _PanicButton extends State<PanicButton> {
   }
 
   void askForService() {
-    LocationRequest.getPosition().then((position) {
-      print("Intentando obtener ubicacion");
-      _request = new PanicRequest(
-          id: "asdfg122321321",
-          name: "Christopher Madrigal",
-          number: "+523318529246",
-          latitude: position.latitude,
-          longitude: position.longitude,
-          typeOfPanic: widget.typeOfAlert);
-    }).catchError((e) {
-      print("Error al obtener la ubicación... " + e.toString());
-    }).whenComplete(() {
-      if (_request != null) {
-        sendRequest(_request.toJson()).then((response) {
-          print("Intentando mandar petición");
-          print(response);
-          if (response) {
-            setState(() {
-              _buttonState = 2;
-              _colorState = Colors.red[800];
-              PushNotifications.addNotification(new Notifications(
-                  status: 0,
-                  onResponse: onResponse,
-                  onComplete: onComplete,
-                  typeOfAlert: widget.typeOfAlert));
+    LocationRequest.getPosition()
+        .then((position) {
+          print("Intentando obtener ubicacion");
+          _request = new PanicRequest(
+              id: "asdfg122321321",
+              name: "Christopher Madrigal",
+              number: "+523318529246",
+              latitude: position.latitude,
+              longitude: position.longitude,
+              typeOfPanic: widget.typeOfAlert);
+        })
+        .timeout(Duration(seconds: 20))
+        .catchError((e) {
+          print("Error al obtener la ubicación... " + e.toString());
+          _showDialog();
+          setState(() {
+            _buttonState = 0;
+            widget.enableButtons();
+          });
+        })
+        .whenComplete(() {
+          if (_request != null) {
+            sendRequest(_request.toJson()).then((response) {
+              print("Intentando mandar petición");
+              if (response) {
+                print("Petición mandada con exito...");
+                setState(() {
+                  _buttonState = 2;
+                  _colorState = Colors.red[800];
+                  PushNotifications.addNotification(new Notifications(
+                      status: 0,
+                      onResponse: onResponse,
+                      onComplete: onComplete,
+                      typeOfAlert: widget.typeOfAlert));
+                });
+              } else {
+                print("Error al mandar petición");
+              }
+            }).catchError((e) {
+              print("Error al mandar petición: " + e.toString());
             });
-          } else {
-            print("Error al mandar petición");
           }
-        }).catchError((e) {
-          print("Error al mandar petición: " + e.toString());
         });
-      }
-    });
   }
 
   Future<bool> sendRequest(json) async {
@@ -184,30 +214,15 @@ class _PanicButton extends State<PanicButton> {
     return success;
   }
 
-  void onResponse() {
-    if (_buttonState == 2)
-      setState(() {
-        _buttonState = 3;
-        _colorState = Colors.yellow[800];
-      });
-  }
-
-  void onComplete() {
-    if (_buttonState == 3)
-      setState(() {
-        _buttonState = 4;
-        _colorState = Colors.green[800];
-      });
-  }
-
-  /*void _showDialog() {
+  void _showDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Alert Dialog title"),
-          content: new Text("Alert Dialog body"),
+          content: new Text(
+              "Favor de revisar que tenga la ubicación encendida y/o su conexión a internet"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Close"),
@@ -219,5 +234,5 @@ class _PanicButton extends State<PanicButton> {
         );
       },
     );
-  }*/
+  }
 }

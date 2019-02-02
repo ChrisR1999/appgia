@@ -39,16 +39,16 @@ class _MainScreenState extends State<MainScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _buildPanicButtons(sizeX),
-            _buildServiceButtons(sizeX),
+            _buildPanicButtons(),
+            _buildServiceButtons(),
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomBar(sizeX, context),
+      bottomNavigationBar: _buildBottomBar(sizeX),
     );
   }
 
-  Widget _buildPanicButtons(double sizeX) {
+  Widget _buildPanicButtons() {
     return Container(
       child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -67,6 +67,7 @@ class _MainScreenState extends State<MainScreen> {
                     PanicButton(
                       enabled: _enableButton,
                       imageRoute: PanicConstants.healthImageRoute,
+                      backgroundImageRoute: PanicConstants.healthBackgroundImageRoute,
                       label: PanicConstants.healthPanicLabel,
                       typeOfAlert: PanicConstants.healthPanicIndicator,
                       blockButtons: _blockButtons,
@@ -75,6 +76,7 @@ class _MainScreenState extends State<MainScreen> {
                     PanicButton(
                       enabled: _enableButton,
                       imageRoute: PanicConstants.securityImageRoute,
+                      backgroundImageRoute: PanicConstants.securityBackgroundImageRoute,
                       label: PanicConstants.securityPanicLabel,
                       typeOfAlert: PanicConstants.securityPanicIndicator,
                       blockButtons: _blockButtons,
@@ -83,6 +85,7 @@ class _MainScreenState extends State<MainScreen> {
                     PanicButton(
                       enabled: _enableButton,
                       imageRoute: PanicConstants.protectionImageRoute,
+                      backgroundImageRoute: PanicConstants.protectionBackgroundImageRoute,
                       label: PanicConstants.protectionPanicLabel,
                       typeOfAlert: PanicConstants.protectionPanicIndicator,
                       blockButtons: _blockButtons,
@@ -93,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
             Row(children: <Widget>[
               Expanded(
                 child: Image.asset(
-                  'images/bottomPanic.png',
+                  'images/header.png',
                   height: sizeX - (sizeX * 0.10),
                   fit: BoxFit.fill,
                 ),
@@ -103,7 +106,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildServiceButtons(sizeX) {
+  Widget _buildServiceButtons() {
     return Container(
       margin: EdgeInsets.only(left: 15.0, right: 15.0),
       child: Row(
@@ -198,7 +201,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildBottomBar(sizeX, context) {
+  Widget _buildBottomBar(sizeX) {
     return BottomAppBar(
       color: Colors.black,
       elevation: 4.0,

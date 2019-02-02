@@ -47,12 +47,15 @@ abstract class PanicConstants {
   static const String healthPanicLabel = 'Salud';
   static const String healthPanicIndicator = 'salud';
   static const String healthImageRoute = 'images/salud.png';
+  static const String healthBackgroundImageRoute='images/fondo_medicina.png';
   static const String securityPanicLabel = 'Seguridad';
   static const String securityPanicIndicator = 'seguridad';
   static const String securityImageRoute = 'images/guardia.png';
+  static const String securityBackgroundImageRoute = 'images/fondo_guardia.png';
   static const String protectionPanicLabel = 'Prot. Civil';
   static const String protectionPanicIndicator = 'proteccion';
   static const String protectionImageRoute = 'images/pCivil.png';
+  static const String protectionBackgroundImageRoute = 'images/fondo_proteccion.png';
 }
 
 abstract class SharedConstants {
