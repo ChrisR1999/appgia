@@ -2,14 +2,12 @@ import 'package:app_trabajo/login/googlelogin.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:app_trabajo/utils/user_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:app_trabajo/shared_preferences/sharedpreferences.dart';
+import 'package:app_trabajo/sharedpreferences/sharedpreferences.dart';
 
 class LoginManager {
   Future<bool> isUserLogged() async {
     bool sucess;
-    int activeLogin;
-
-    activeLogin = SharedGia.getActiveLogin();
+    int activeLogin = SharedGia.getActiveLogin();
 
     switch (activeLogin) {
       case SharedConstants.googleLogin:

@@ -4,14 +4,13 @@ import 'package:app_trabajo/pages/main_screen.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:app_trabajo/pages/number_screen.dart';
 import 'package:app_trabajo/permissions/permissions.dart';
-import 'package:app_trabajo/shared_preferences/sharedpreferences.dart';
+import 'package:app_trabajo/sharedpreferences/sharedpreferences.dart';
 import 'package:app_trabajo/login/login_manager.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:app_trabajo/styles/themedata_style.dart';
 
 void main() async {
   await SharedGia.initShared();
-
   LoginManager _loginManager = new LoginManager();
   Permissions _permissions =
       new Permissions(permissionWanted: Permission.AccessFineLocation);

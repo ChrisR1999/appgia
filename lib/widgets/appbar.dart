@@ -33,6 +33,29 @@ abstract class AppBarWidget {
     );
   }
 
+  static AppBar getSMapAppBar(context) {
+    return AppBar(
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        color: Colors.white,
+        icon: Icon(
+          Icons.keyboard_arrow_left,
+          size: 40.0,
+        ),
+      ),
+      title: Text(
+        StringConstants.appBarTitle,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 25.0,
+        ),
+      ),
+      backgroundColor: Colors.black,
+    );
+  }
+
   static AppBar getSettingsAppBar(context) {
     return AppBar(
       leading: IconButton(

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:app_trabajo/pages/settings_screen.dart';
+import 'package:app_trabajo/pages/map_screen.dart';
 import 'package:app_trabajo/widgets/appbar.dart';
 import 'package:app_trabajo/utils/display_utils.dart';
 import 'package:app_trabajo/utils/constants_utils.dart';
 import 'package:app_trabajo/widgets/panic_button_1.dart';
+import 'package:app_trabajo/notifications/notifications.dart';
 import 'package:app_trabajo/notifications/push_notification.dart';
 
 class MainScreen extends StatefulWidget {
   PushNotifications _pushNotifications;
+  Notifications _notifications;
+
   MainScreen() {
     _pushNotifications = new PushNotifications();
+    _notifications = new Notifications();
   }
   @override
   State<StatefulWidget> createState() {
@@ -65,38 +70,41 @@ class _MainScreenState extends State<MainScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     PanicButton(
-                      enabled: _enableButton,
-                      imageRoute: PanicConstants.healthImageRoute,
-                      backgroundImageRoute: PanicConstants.healthBackgroundImageRoute,
-                      label: PanicConstants.healthPanicLabel,
-                      typeOfAlert: PanicConstants.healthPanicIndicator,
-                      blockButtons: _blockButtons,
-                      enableButtons: _enableButtons
-                    ),
+                        enabled: _enableButton,
+                        imageRoute: PanicConstants.healthImageRoute,
+                        backgroundImageRoute:
+                            PanicConstants.healthBackgroundImageRoute,
+                        label: PanicConstants.healthPanicLabel,
+                        typeOfAlert: PanicConstants.healthPanicIndicator,
+                        blockButtons: _blockButtons,
+                        enableButtons: _enableButtons,
+                        openMap: _openMapScreen),
                     PanicButton(
-                      enabled: _enableButton,
-                      imageRoute: PanicConstants.securityImageRoute,
-                      backgroundImageRoute: PanicConstants.securityBackgroundImageRoute,
-                      label: PanicConstants.securityPanicLabel,
-                      typeOfAlert: PanicConstants.securityPanicIndicator,
-                      blockButtons: _blockButtons,
-                      enableButtons: _enableButtons
-                    ),
+                        enabled: _enableButton,
+                        imageRoute: PanicConstants.securityImageRoute,
+                        backgroundImageRoute:
+                            PanicConstants.securityBackgroundImageRoute,
+                        label: PanicConstants.securityPanicLabel,
+                        typeOfAlert: PanicConstants.securityPanicIndicator,
+                        blockButtons: _blockButtons,
+                        enableButtons: _enableButtons,
+                        openMap:_openMapScreen),
                     PanicButton(
-                      enabled: _enableButton,
-                      imageRoute: PanicConstants.protectionImageRoute,
-                      backgroundImageRoute: PanicConstants.protectionBackgroundImageRoute,
-                      label: PanicConstants.protectionPanicLabel,
-                      typeOfAlert: PanicConstants.protectionPanicIndicator,
-                      blockButtons: _blockButtons,
-                      enableButtons: _enableButtons
-                    ),
+                        enabled: _enableButton,
+                        imageRoute: PanicConstants.protectionImageRoute,
+                        backgroundImageRoute:
+                            PanicConstants.protectionBackgroundImageRoute,
+                        label: PanicConstants.protectionPanicLabel,
+                        typeOfAlert: PanicConstants.protectionPanicIndicator,
+                        blockButtons: _blockButtons,
+                        enableButtons: _enableButtons,
+                        openMap:_openMapScreen),
                   ],
                 )),
             Row(children: <Widget>[
               Expanded(
                 child: Image.asset(
-                  'images/header.png',
+                  'images/bottomPanic.png',
                   height: sizeX - (sizeX * 0.10),
                   fit: BoxFit.fill,
                 ),
@@ -249,5 +257,12 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       _enableButton = false;
     });
+  }
+
+  void _openMapScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MapScreen()),
+    );
   }
 }

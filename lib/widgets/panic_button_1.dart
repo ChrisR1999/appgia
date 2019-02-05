@@ -4,6 +4,7 @@ import 'package:app_trabajo/utils/display_utils.dart';
 import 'package:app_trabajo/utils/user_utils.dart';
 import 'package:app_trabajo/requests/location_request.dart';
 import 'package:app_trabajo/models/panicrequest_model.dart';
+import 'package:app_trabajo/models/notification_model.dart';
 import 'package:app_trabajo/notifications/push_notification.dart';
 
 class PanicButton extends StatefulWidget {
@@ -14,6 +15,7 @@ class PanicButton extends StatefulWidget {
   final String backgroundImageRoute;
   final Function blockButtons;
   final Function enableButtons;
+  final Function openMap;
 
   PanicButton(
       {this.enabled,
@@ -22,7 +24,8 @@ class PanicButton extends StatefulWidget {
       this.imageRoute,
       this.backgroundImageRoute,
       this.blockButtons,
-      this.enableButtons});
+      this.enableButtons,
+      this.openMap});
 
   @override
   State<StatefulWidget> createState() {
@@ -89,7 +92,7 @@ class _PanicButton extends State<PanicButton> {
                   askForService();
                 });
               } else if (_buttonState == 3) {
-                //Abrir mapa
+                widget.openMap();
               }
             },
             child: _setBody()));
@@ -167,6 +170,8 @@ class _PanicButton extends State<PanicButton> {
               latitude: position.latitude,
               longitude: position.longitude,
               typeOfPanic: widget.typeOfAlert);
+            UserUtils.latitude = position.latitude;
+            UserUtils.longitude = position.longitude;
         })
         .timeout(Duration(seconds: 20))
         .catchError((e) {
@@ -186,7 +191,7 @@ class _PanicButton extends State<PanicButton> {
                 setState(() {
                   _buttonState = 2;
                   _colorState = Colors.red[800];
-                  PushNotifications.addNotification(new Notifications(
+                  PushNotifications.addNotification(new NotificationModel(
                       status: 0,
                       onResponse: onResponse,
                       onComplete: onComplete,

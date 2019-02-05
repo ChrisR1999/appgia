@@ -5,7 +5,7 @@ import 'package:app_trabajo/login/googlelogin.dart';
 import 'package:app_trabajo/pages/number_screen.dart';
 import 'package:app_trabajo/pages/corporative_login_screen.dart';
 import 'package:app_trabajo/utils/display_utils.dart';
-import 'package:app_trabajo/shared_preferences/sharedpreferences.dart';
+import 'package:app_trabajo/sharedpreferences/sharedpreferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
